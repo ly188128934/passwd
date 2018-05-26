@@ -1,1 +1,15 @@
-#保存加密的密码到数据库
+#灏嗙敓鎴愮殑瀵嗙爜淇濆瓨鍒版暟鎹簱
+import MySQLdb
+
+db = MySQLdb.connect(host,UserWarning,password,dbname,charset='utf8')
+
+cursor = db.cursor()
+
+# 鎵цsql
+cursor.execute("sql")
+
+#鑾峰彇鏁版嵁
+data = cursor.fetchone()
+
+
+db.close()
