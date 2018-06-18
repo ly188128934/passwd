@@ -20,16 +20,16 @@ def get_old_record(id):
     cursor.execute(get_sql)
     return cursor.fetchone()
 
-def insert_new_record(username,password,expiry='365',uses='null',address='null',remark='null'):
-    insert_new_sql="insert into %s.account_info(username,password,expiry,uses,address,remark) values('%s','%s','%s','%s','%s','%s');" % (dbname,username,password,expiry,uses,address,remark)
+def insert_new_record(username,password,expiry='365',pw_type='0',uses='null',address='null',remark='null'):
+    insert_new_sql="insert into %s.account_info(username,password,expiry,pw_type,uses,address,remark) values('%s','%s','%s','%s','%s','%s','%s');" % (dbname,username,password,expiry,pw_type,uses,address,remark)
     try:
         cursor.execute(insert_new_sql)
         db.commit()
     except:
         db.rollback()
 
-def insert_old_record(id,username,password,remark='null'):
-    insert_old_sql="insert into %s.pwd_history(id,username,password,remark) values('%s','%s','%s','%s');" % (dbname,id,username,password,remark)
+def insert_old_record(id,username,password,pw_type,remark='null'):
+    insert_old_sql="insert into %s.pwd_history(id,username,password,pw_type,remark) values('%s','%s','%s','%s','%s');" % (dbname,id,username,password,pw_type,remark)
     try:
         cursor.execute(insert_old_sql)
         db.commit()
@@ -38,7 +38,7 @@ def insert_old_record(id,username,password,remark='null'):
 
 def back_old_record(id):
     data=get_old_record(id)
-    insert_old_record(id=int(data[0]),username=data[1],password=data[2],remark=data[3])
+    insert_old_record(id=int(data[0]),username=data[1],password=data[2],pw_type=data[3],remark=data[4])
 
 def update_record(id,field,value):
     change_sql="update %s.account_info set %s='%s' where id=%s" % (dbname,field,value,id)
@@ -60,8 +60,9 @@ def delete_record(id):
         db.commit()
     except:
         db.rollback()
-
-if sys.argv[1] == 'delete':
+if sys.argv[1] == 'insert':
+    insert_new_record(sys.argv[2],sys.argv[3],sys.argv[4],sys.argv[5],sys.argv[6],sys.argv[7],sys.argv[8])
+elif sys.argv[1] == 'delete':
     delete_record(sys.argv[2])
 elif sys.argv[1] == 'update':
     change_record(sys.argv[2],sys.argv[3],sys.argv[4])
