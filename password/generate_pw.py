@@ -1,18 +1,17 @@
 import string
 import random
 import sys
+import re
 
+#生成密码，放在本地执行，生成后上传到服务器
 
-def generate(length,*pw_type):
-    all_pw = ''
-    for num in pw_type:
-        print num
-        num1 = str(num)
-        return string.(str(um1))
-        #all_pw += string.(str(num))
-        #print all_pw
-    return ''.join(random.choice(all_pw) for _ in range(length))
+def generate(length,pw_type):
+    if pw_type == '0':
+        return ''.join(random.choice(string.digits) for _ in range(length))
+    elif pw_type == '1':
+        return ''.join(random.choice(string.digits+string.letters) for _ in range(length))
+    elif pw_type == '2':
+        #return (string.printable).replace('\\','').replace('|','').replace('%','')
+        return ''.join(random.choice((string.printable).replace('_','').replace('\\','').replace('?','').replace('`','').replace('|','').replace().replace('\"','').replace('~','').replace('\'','').replace('<','').replace('>','')) for _ in range(length))
 
-#length,digits,letters,lowercase,printable,punctuation,uppercase
-
-print (generate(int(sys.argv[1]),'digits','letters','lowercase','punctuation','uppercase'))
+print (str(generate(int(sys.argv[1]), sys.argv[2])))
